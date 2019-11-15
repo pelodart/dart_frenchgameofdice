@@ -1,0 +1,9 @@
+name: frenchgameofdice
+version: 1.0.0
+description: >-
+  Simple game of dice
+author: PeLo
+dependencies:
+
+environment:
+  sdk: '>=2.0.0 <3.0.0'
