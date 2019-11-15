@@ -61,22 +61,25 @@ class FrenchGameOfDice {
 
   // helper methods - output
   String _lineToString(int lineNumber) {
-    return _linePrefix(lineNumber) + _lineCenter() + _lineSuffix();
+    double chance = _chanceOfWinning(_gotSix, _gotNoSix);
+    return _linePrefix(lineNumber) +
+        _lineCenter(chance) +
+        _lineSuffix(lineNumber, chance);
   }
 
   String _linePrefix(int lineNumber) {
     String s = '     ';
-    if (lineNumber < 1000) s += ' ';
+    if (lineNumber < 10) s += ' ';
     s += '${lineNumber * 100}: ';
     return s;
   }
 
-  String _lineSuffix() {
-    return '(${_chanceOfWinning(_gotSix, _gotNoSix).toStringAsFixed(2)})';
+  String _lineSuffix(int lineNumber, double chance) {
+    return '(${chance.toStringAsFixed(2)})';
   }
 
-  String _lineCenter() {
-    double chance = _chanceOfWinning(_gotSix, _gotNoSix);
+  String _lineCenter(double chance) {
+    //  double chance = _chanceOfWinning(_gotSix, _gotNoSix);
 
     int numSpaces = 50;
     int freeLeadingSpaces =
@@ -104,6 +107,7 @@ class FrenchGameOfDice {
   }
 
   void _printFooter(double chance, int numIterations) {
+    print('');
     print(
         '==> Statistisch ermnittelte Gewinnchance ($numIterations Würfe): $chance');
   }
