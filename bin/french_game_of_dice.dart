@@ -21,46 +21,9 @@ class FrenchGameOfDice {
     _printHeader();
     for (int i = 0; i <= maxIterations / 100; i++) {
       _doHundredTosses();
-      _printLine(i+1);
+      _printLine(i + 1);
     }
     _printFooter(_chanceOfWinning(_gotSix, _gotNoSix), maxIterations);
-  }
-
-  void _printLine(int lineNumber /* , int gotSix, int gotNoSix */) {
-    String printPrefix(int value) {
-      String s = '     ';
-      if (value < 1000) s += ' ';
-      s += '$value: ';
-      return s;
-    }
-
-    String printSuffix() {
-      return '(${_chanceOfWinning(_gotSix, _gotNoSix).toStringAsFixed(2)})';
-    }
-
-    String printChanceOfWinning(/* int gotSix, int gotNoSix   */) {
-      double chance = _chanceOfWinning(_gotSix, _gotNoSix);
-
-      int numSpaces = 50;
-      int freeLeadingSpaces =
-          ((chance - 40.0) * 2.5).toInt(); // 1 percent == 2,5 positions
-      int freeTrailingSpaces = numSpaces - freeLeadingSpaces;
-
-      String s = '';
-      for (int i = 0; i < freeLeadingSpaces; i++) s += ' ';
-      s += '*';
-      for (int i = 0; i < freeTrailingSpaces; i++) s += ' ';
-      s += '          '; // padding to the right
-      return s;
-    }
-
-    print(printPrefix(lineNumber) +
-        printChanceOfWinning(/* _gotSix, _gotNoSix  */) +
-        printSuffix());
-
-    // return printPrefix(count) +
-    //     printChanceOfWinning(gotSix, gotNoSix) +
-    //     printSuffix();
   }
 
   // helper methods - game logic
@@ -97,6 +60,41 @@ class FrenchGameOfDice {
   }
 
   // helper methods - output
+  String _lineToString(int lineNumber) {
+    return _linePrefix(lineNumber) + _lineCenter() + _lineSuffix();
+  }
+
+  String _linePrefix(int lineNumber) {
+    String s = '     ';
+    if (lineNumber < 1000) s += ' ';
+    s += '${lineNumber * 100}: ';
+    return s;
+  }
+
+  String _lineSuffix() {
+    return '(${_chanceOfWinning(_gotSix, _gotNoSix).toStringAsFixed(2)})';
+  }
+
+  String _lineCenter() {
+    double chance = _chanceOfWinning(_gotSix, _gotNoSix);
+
+    int numSpaces = 50;
+    int freeLeadingSpaces =
+        ((chance - 40.0) * 2.5).toInt(); // 1 percent == 2,5 positions
+    int freeTrailingSpaces = numSpaces - freeLeadingSpaces;
+
+    String s = '';
+    for (int i = 0; i < freeLeadingSpaces; i++) s += ' ';
+    s += '*';
+    for (int i = 0; i < freeTrailingSpaces; i++) s += ' ';
+    s += '          '; // padding to the right
+    return s;
+  }
+
+  void _printLine(int lineNumber) {
+    print(_lineToString(lineNumber));
+  }
+
   void _printHeader() {
     print(
         '           40   42   44   46   48   50   52   54   56   58   60          Prozent');
